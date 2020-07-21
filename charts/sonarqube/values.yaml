@@ -165,7 +165,8 @@ emptyDir: {}
 #    - "https://github.com/AmadeusITGroup/sonar-stash/releases/download/1.3.0/sonar-stash-plugin-1.3.0.jar"
 #    - "https://github.com/SonarSource/sonar-ldap/releases/download/2.2-RC3/sonar-ldap-plugin-2.2.0.601.jar"
 plugins:
-  install: []
+  install:
+    - "https://github.com/vaulttec/sonar-auth-oidc/releases/download/v2.0.0/sonar-auth-oidc-plugin-2.0.0.jar"
   lib: []
 
   # For use behind a corporate proxy when downloading plugins
@@ -183,10 +184,20 @@ plugins:
 
 # A custom sonar.properties file can be provided via dictionary.
 # For example:
-# sonarProperties:
-#   sonar.forceAuthentication: true
-#   sonar.security.realm: LDAP
-#   ldap.url: ldaps://organization.com
+sonarProperties:
+  sonar.forceAuthentication: true
+  sonar.core.serverBaseURL: <Your SonarQube Base URL without trailing slash>
+  sonar.auth.oidc.enabled: true
+  sonar.auth.oidc.issuerUri: <issuerUri without trialing slash>
+  sonar.auth.oidc.clientId.secured: <clientId>
+  sonar.auth.oidc.clientSecret.secured: <clientSecret>
+  sonar.auth.oidc.scopes: openid email profile
+  sonar.auth.oidc.allowUsersToSignUp: true
+  sonar.auth.oidc.loginStrategy: "Same as OpenID Connect login"
+  #For other strategies refer https://github.com/vaulttec/sonar-auth-oidc/blob/master/src/main/java/org/vaulttec/sonarqube/auth/oidc/OidcConfiguration.java#L53
+  sonar.auth.oidc.loginButtonText: <Custom Login Button text>
+# sonar.security.realm: LDAP
+# ldap.url: ldaps://organization.com
 
 # Additional sonar properties to load from a secret with a key "secret.properties" (must be a string)
 # sonarSecretProperties:
